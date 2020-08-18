@@ -30,6 +30,13 @@ window.addEventListener('touchstart', function (e) {
   } else {
     e.preventDefault();
     tapCount = 0;
+
+    screenfull.toggle(document.getElementById('container')).then(function () {
+      console.log(
+        'Fullscreen mode: ' +
+          (screenfull.isFullscreen ? 'enabled' : 'disabled'),
+      );
+    });
   }
 });
 
