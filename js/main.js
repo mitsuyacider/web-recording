@@ -15,6 +15,47 @@ var switchCameraButton;
 var amountOfCameras = 0;
 var currentFacingMode = 'environment';
 
+var tapCount = 0;
+
+window.addEventListener('touchstart', function (e) {
+  // シングルタップ判定
+  if (!tapCount) {
+    ++tapCount;
+
+    setTimeout(function () {
+      tapCount = 0;
+    }, 350);
+
+    // ダブルタップ判定
+  } else {
+    e.preventDefault();
+    tapCount = 0;
+  }
+});
+
+window.addEventListener('click', function (e) {
+  // シングルタップ判定
+  if (!tapCount) {
+    ++tapCount;
+
+    setTimeout(function () {
+      tapCount = 0;
+    }, 350);
+
+    // ダブルタップ判定
+  } else {
+    e.preventDefault();
+
+    screenfull.toggle(document.getElementById('container')).then(function () {
+      console.log(
+        'Fullscreen mode: ' +
+          (screenfull.isFullscreen ? 'enabled' : 'disabled'),
+      );
+    });
+    tapCount = 0;
+  }
+});
+
 // this function counts the amount of video inputs
 // it replaces DetectRTC that was previously implemented.
 function deviceCount() {
@@ -87,6 +128,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
   }
 });
 
+function fullScreenChange() {
+  if (screenfull.isFullscreen) {
+    toggleFullScreenButton.setAttribute('aria-pressed', true);
+  } else {
+    toggleFullScreenButton.setAttribute('aria-pressed', false);
+  }
+}
+
 function initCameraUI() {
   video = document.getElementById('video');
 
@@ -103,14 +152,6 @@ function initCameraUI() {
   });
 
   // -- fullscreen part
-
-  function fullScreenChange() {
-    if (screenfull.isFullscreen) {
-      toggleFullScreenButton.setAttribute('aria-pressed', true);
-    } else {
-      toggleFullScreenButton.setAttribute('aria-pressed', false);
-    }
-  }
 
   if (screenfull.isEnabled) {
     screenfull.on('change', fullScreenChange);

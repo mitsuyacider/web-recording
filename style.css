@@ -105,13 +105,14 @@ button {
     */
   #vid_container {
     width: 100%;
-    height: 80%;
+    height: 100%;
   }
 
   #gui_controls {
     width: 100%;
-    height: 20%;
+    height: 0%;
     left: 0;
+    display: none;
   }
 
   #switchCameraButton {
@@ -127,12 +128,12 @@ button {
 
 @media screen and (orientation: landscape) {
   #vid_container {
-    width: 80%;
+    width: 100%;
     height: 100%;
   }
 
   #vid_container.left {
-    left: 20%;
+    left: 0%;
   }
 
   /* we default to right */
@@ -140,6 +141,7 @@ button {
     width: 20%;
     height: 100%;
     right: 0;
+    display: none;
   }
 
   /* for the lefties */
