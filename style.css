@@ -133,7 +133,7 @@ button {
   }
 
   #vid_container.left {
-    left: 0%;
+    left: 20%;
   }
 
   /* we default to right */
@@ -141,7 +141,15 @@ button {
     width: 20%;
     height: 100%;
     right: 0;
-    display: none;
+    visibility: hidden;
+  }
+
+  #gui_controls[aria-hidden='true'] {
+    visibility: hidden;
+  }
+
+  #gui_controls[aria-hidden='false'] {
+    visibility: visible;
   }
 
   /* for the lefties */

@@ -14,54 +14,7 @@ var toggleFullScreenButton;
 var switchCameraButton;
 var amountOfCameras = 0;
 var currentFacingMode = 'environment';
-
-var tapCount = 0;
-
-window.addEventListener('touchstart', function (e) {
-  // シングルタップ判定
-  if (!tapCount) {
-    ++tapCount;
-
-    setTimeout(function () {
-      tapCount = 0;
-    }, 350);
-
-    // ダブルタップ判定
-  } else {
-    e.preventDefault();
-    tapCount = 0;
-
-    screenfull.toggle(document.getElementById('container')).then(function () {
-      console.log(
-        'Fullscreen mode: ' +
-          (screenfull.isFullscreen ? 'enabled' : 'disabled'),
-      );
-    });
-  }
-});
-
-window.addEventListener('click', function (e) {
-  // シングルタップ判定
-  if (!tapCount) {
-    ++tapCount;
-
-    setTimeout(function () {
-      tapCount = 0;
-    }, 350);
-
-    // ダブルタップ判定
-  } else {
-    e.preventDefault();
-
-    screenfull.toggle(document.getElementById('container')).then(function () {
-      console.log(
-        'Fullscreen mode: ' +
-          (screenfull.isFullscreen ? 'enabled' : 'disabled'),
-      );
-    });
-    tapCount = 0;
-  }
-});
+var gui;
 
 // this function counts the amount of video inputs
 // it replaces DetectRTC that was previously implemented.
@@ -135,21 +88,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
   }
 });
 
-function fullScreenChange() {
-  if (screenfull.isFullscreen) {
-    toggleFullScreenButton.setAttribute('aria-pressed', true);
-  } else {
-    toggleFullScreenButton.setAttribute('aria-pressed', false);
-  }
-}
-
 function initCameraUI() {
   video = document.getElementById('video');
 
   takePhotoButton = document.getElementById('takePhotoButton');
   toggleFullScreenButton = document.getElementById('toggleFullScreenButton');
   switchCameraButton = document.getElementById('switchCameraButton');
-
+  gui = document.getElementById('gui_controls');
   // https://developer.mozilla.org/nl/docs/Web/HTML/Element/button
   // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_button_role
 
@@ -157,6 +102,16 @@ function initCameraUI() {
     takeSnapshotUI();
     takeSnapshot();
   });
+
+  function fullScreenChange() {
+    if (screenfull.isFullscreen) {
+      toggleFullScreenButton.setAttribute('aria-pressed', true);
+      gui.setAttribute('aria-hidden', true);
+    } else {
+      toggleFullScreenButton.setAttribute('aria-pressed', false);
+      gui.setAttribute('aria-hidden', false);
+    }
+  }
 
   // -- fullscreen part
 
