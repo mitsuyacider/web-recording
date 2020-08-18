@@ -16,6 +16,48 @@ var amountOfCameras = 0;
 var currentFacingMode = 'environment';
 var gui;
 
+var tapCount = 0;
+
+window.addEventListener('touchstart', function (e) {
+  // シングルタップ判定
+  if (!tapCount) {
+    ++tapCount;
+
+    setTimeout(function () {
+      tapCount = 0;
+    }, 350);
+
+    // ダブルタップ判定
+  } else {
+    e.preventDefault();
+    tapCount = 0;
+
+    screenfull
+      .toggle(document.getElementById('container'))
+      .then(function () {});
+  }
+});
+
+// window.addEventListener('click', function (e) {
+//   // シングルタップ判定
+//   if (!tapCount) {
+//     ++tapCount;
+
+//     setTimeout(function () {
+//       tapCount = 0;
+//     }, 350);
+
+//     // ダブルタップ判定
+//   } else {
+//     e.preventDefault();
+
+//     screenfull
+//       .toggle(document.getElementById('container'))
+//       .then(function () {});
+//     tapCount = 0;
+//   }
+// });
+
 // this function counts the amount of video inputs
 // it replaces DetectRTC that was previously implemented.
 function deviceCount() {
@@ -64,6 +106,19 @@ document.addEventListener('DOMContentLoaded', function (event) {
         stream.getTracks().forEach(function (track) {
           track.stop();
         });
+
+        const constraints = {
+          focusMode: 'none',
+        };
+        const track = stream.getVideoTracks()[0];
+        track
+          .applyConstraints(constraints)
+          .then(() => {
+            // Do something with the track such as using the Image Capture API.
+          })
+          .catch((e) => {
+            // The constraints could not be satisfied by the available devices.
+          });
 
         deviceCount().then(function (deviceCount) {
           amountOfCameras = deviceCount;
